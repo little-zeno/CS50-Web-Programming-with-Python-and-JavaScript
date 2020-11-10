@@ -1,0 +1,59 @@
+
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Listing Details</h2>
+        
+    <div class="listing-details-page">
+        <h3>Listing: {{ listing.title }}</h3>
+        <img src="{{ listing.imageURL }}" alt="{{ listing.title }}" class="listing-image"/>
+        <p>Description: {{ listing.description }}</p>
+        <p class="listing-price">Initial Listing Price: ${{ listing.price }}</p>
+        <p class="listing-price">Current Highest Bid Price: ${{ current_price }}</p>
+        <h4>Details:</h4>
+        <ul>
+            <li style="color: gray;">Created: {{ listing.date }}</li>
+            <li>Categoty: {{ listing.category }}</li>
+            <li>Listed by: {{listing.user}}</li>
+        </ul>
+
+        <!-- <form method="POST" action="{% url 'listing' listing.id %}">
+            {% csrf_token %}
+            <input type="submit" value="Add to watchlist"/>
+        </form> -->
+        {% if watchlist %}
+            <a href="{% url 'watchlist_action' listing.id %}">Remove from watchlist</a>
+        {% else %}
+            <a href="{% url 'watchlist_action' listing.id %}">Add to watchlist</a>
+        {% endif %}
+
+        <h4>Place Bid:</h4>
+        <p>{{ bids_count }} bid(s) so far. Your bid is the current bid.</p>
+        <form method="POST" action="{% url 'listing' listing.id %}">
+            {% csrf_token %}
+            {{ bid_form.as_p }}
+             <input type="submit" value="Place Bid"/>
+            {% if bid_message %}
+            <div>{{ bid_message }}</div>
+            {% endif %}
+        </form>
+
+        {% if comment_message %}
+        <div>{{ comment_message }}</div>
+        {% endif %}
+
+        <h4>Add Comment:</h4>
+        <form method="POST" action="{% url 'add_comment' listing.id %}">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+             <input type="submit" value="Add Comment"/>
+        </form>
+
+        <h4>Past Comments:</h4>
+        {% for comment in comments %}
+            <p>{{ comment.content }} : by {{ comment.commenter }} on {{ comment.comment_date }}<p>
+        {% endfor %}
+        
+    <div>
+       
+{% endblock %}

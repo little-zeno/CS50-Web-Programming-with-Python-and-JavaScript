@@ -1,0 +1,33 @@
+body {
+    padding: 10px;
+}
+
+.listing-details {
+    display: flex;
+    flex-direction: row;
+    padding: 0px 70px;
+    border-style: groove;
+    border-radius: 10px; 
+    margin-top: 10px;
+}
+
+.listing-info {
+    padding: 0px 170px;
+}
+
+.listing-image{
+    float: left;
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+}
+
+.listing-details-page{
+    display:flex;
+    flex-direction: column;
+}
+
+.listing-price{
+    font-size: 30px;
+    font-weight: 700;
+}
