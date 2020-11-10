@@ -3,6 +3,12 @@
 
 {% block body %}
     <h2>Listing Details</h2>
+
+     {% if not listing.active %}
+        <h4>This auction has been ended</h4>
+        <h4>Winner is {{ listing.winner }}</h4>
+    {% endif %}
+
         
     <div class="listing-details-page">
         <h3>Listing: {{ listing.title }}</h3>
@@ -38,6 +44,10 @@
             {% endif %}
         </form>
 
+        {% if listing.user == user %}
+            <a href="{% url 'end_auction' listing.id %}">End Auction</a>
+        {% endif %}
+        
         {% if comment_message %}
         <div>{{ comment_message }}</div>
         {% endif %}

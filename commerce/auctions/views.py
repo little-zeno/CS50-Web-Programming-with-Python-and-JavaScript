@@ -109,7 +109,6 @@ def category_list(request, category):
 def add_comment(request, listing_id):
     listing_details = Listings.objects.get(id=listing_id)
     comments = Comments.objects.filter(listing=listing_details)
-    print(comments)
     # Add comment option
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
@@ -183,5 +182,15 @@ def watchlist(request):
     listings = request.user.active_user.annotate(highest_bid=Max('bids__bid_price'))
     return render(request, "auctions/watchlist.html", {"listings": listings})
     
+
+@login_required
+def end_auction(request, listing_id):
+    listing_details = Listings.objects.get(id=listing_id)
+    top_bid = Bids.objects.filter(listing=listing_id).order_by('bid_price').last()
+    if top_bid:
+        listing_details.winner = top_bid.bidder
+    listing_details.active = False
+    listing_details.save()
+    return HttpResponseRedirect(reverse("listing", args=(listing_id)))
 
 
